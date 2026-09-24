@@ -1,0 +1,75 @@
+CLEARLEDGER INVESTIGATION
+
+Fresh demo:
+Invoice count: 6
+Open count: 5
+Outstanding: 3209.99
+
+DEFECT 1 — Open invoice filter is incorrect
+
+Expected:
+Open invoices should have balance > 0.
+Fresh demo contains 5 open invoices.
+
+Actual:
+Selecting "Open invoices" displays INV-101,
+which has balance ₹0.00 and status "paid".
+
+Impact:
+The owner cannot rely on the Open invoices view to identify
+outstanding invoices.
+
+Priority:
+High
+
+DEFECT #1 — Open invoice filter
+
+Expected:
+Open filter should show invoices with positive balance.
+
+Actual:
+Open filter shows INV-101, which has ₹0 balance and status "paid".
+
+Result:
+FAIL
+
+IMPORT TEST — First invoice import
+
+Before:
+6 invoices
+5 open
+₹3,209.99 outstanding
+
+Imported invoices:
+INV-102
+INV-202
+
+After:
+8 invoices
+7 open
+₹3,489.99 outstanding
+
+
+DEFECT 2 — Duplicate invoice import
+
+First import:
+6 → 8 invoices
+5 → 7 open invoices
+₹3,209.99 → ₹3,489.99 outstanding
+
+Second identical import:
+8 → 10 invoices
+7 → 9 open invoices
+₹3,489.99 → ₹3,769.99 outstanding
+
+Expected:
+Second import should skip both existing invoices.
+Imported: 0
+Skipped: 2
+Rejected: 0
+
+Impact:
+Retrying an import duplicates invoices and incorrectly increases
+the outstanding amount.
+
+Priority: High
